@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ambiente virtual
+.venv/
+
+# Editores / IDEs
+.idea/
+.vscode/
+
+# Testes
+.pytest_cache/
+
+# Sistema operacional
+.DS_Store
+desktop.ini
+Thumbs.db
