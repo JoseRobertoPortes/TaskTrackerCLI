@@ -1,47 +1,51 @@
-tarefas = [
-    {"Id": 1, "Nome": "lavar o carro", "Prioridade": "alta", "Status": "To_do"},
-    {"Id": 2, "Nome": "estudar POO", "Prioridade": "alta", "Status": "In_progress"},
-    {"Id": 3, "Nome": "ir dormir", "Prioridade": "baixa", "Status": "To_do"},
-    {"Id": 4, "Nome": "comprar pão", "Prioridade": "media", "Status": "Done"},
-    {"Id": 5, "Nome": "responder email", "Prioridade": "media", "Status": "To_do"},
-]
+import json
+
+def carregar_tarefas():
+    with open('lista_tarefas.json', 'r', encoding='utf-8') as arquivo:
+        return json.load(arquivo, ensure_ascii=False)
+
+lista_tarefas = carregar_tarefas()
+
 
 def add_Tarefa(tarefa, prioridade):
-        novo_id = tarefas[-1]["Id"] + 1 if tarefas else 1
+    novo_id = lista_tarefas[-1]["Id"] + 1 if lista_tarefas else 1
+    tarefa_atual = {
+        "Id": novo_id,
+        "Nome": tarefa,
+        "Prioridade": prioridade,
+        "Status": "To_do"
+    }
+    lista_tarefas.append(tarefa_atual)
+    with open('lista_tarefas.json', "w", encoding='utf-8') as arquivo:
+        json.dump(lista_tarefas,arquivo, ensure_ascii=False)
+    return tarefa
 
-        lista_tarefas = {
-              "Id" : novo_id,
-              "Nome" : tarefa,
-              "Prioridade" : prioridade,
-              "Status" : "To_do"
-        }
-        tarefas.append(lista_tarefas)
-        return tarefa
 
 def apresentar_lista():
-    for c in range(len(tarefas)):
-         print(tarefas[c])
+    for c in range(len(lista_tarefas)):
+        print(lista_tarefas[c])
+
 
 def select_status(id_tarefa, status):
     conversor = int(id_tarefa)
-    for tarefa in tarefas:
+    for tarefa in lista_tarefas:
         if tarefa["Id"] == conversor:
             tarefa["Status"] = status
-            return True
-    return False
-
-def conluida(id_tarefa):
-    conversor = int(id_tarefa)
-    for tarefa in tarefas:
-        if tarefa["Id"] == conversor:
-            tarefa["Status"] = "Done"
+            with open('lista_tarefas.json', "w", encoding='utf-8') as arquivo:
+                json.dump(lista_tarefas, arquivo, ensure_ascii=False)
             return True
     return False
 
 def del_tarefa(id_tarefa):
     conversor = int(id_tarefa)
-    for tarefa in tarefas:
+    for tarefa in lista_tarefas:
+
         if tarefa["Id"] == conversor:
-            tarefas.remove(tarefa)
+            lista_tarefas.remove(tarefa)
+            with open('lista_tarefas.json', 'w', encoding='utf-8') as arquivo:
+                json.dump(lista_tarefas,arquivo, ensure_ascii=False)
+
             return True
     return False
+
+
